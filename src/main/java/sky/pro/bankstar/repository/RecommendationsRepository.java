@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -21,6 +22,21 @@ public class RecommendationsRepository {
                 user);
         return result != null ? result : 0;
     }
+
+    public int getCountOfUsers() {
+        Integer result = jdbcTemplate.queryForObject(
+                "SELECT COUNT(amount) FROM transactions",
+                Integer.class);
+        return result != null ? result : 0;
+    }
+
+    public List<String> getUsersInvest500() {
+        Integer result = jdbcTemplate.queryForObject(
+                "SELECT users_id FROM transactions ",
+                Integer.class);
+        return null;
+    }
+
 
 
 }
