@@ -15,7 +15,7 @@ public class RecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public int getRandomTransactionAmount(UUID user){
+    public int getRandomTransactionAmount(UUID user) {
         Integer result = jdbcTemplate.queryForObject(
                 "SELECT amount FROM transactions t WHERE t.user_id = ? LIMIT 1",
                 Integer.class,
@@ -30,13 +30,50 @@ public class RecommendationsRepository {
         return result != null ? result : 0;
     }
 
-    public List<String> getUsersInvest500() {
-        Integer result = jdbcTemplate.queryForObject(
-                "SELECT users_id FROM transactions ",
-                Integer.class);
-        return null;
+    public List<String> getListOfUsers() {
+        List<String> result = jdbcTemplate.queryForList(
+                "SELECT user_id FROM TRANSACTIONs T INNER JOIN PRODUCTS P ON T.product_id = P.id " +
+                        "WHERE  P.\"TYPE\" = 'DEBIT' UNION SELECT user_id FROM TRANSACTIONs T " +
+                        "INNER JOIN PRODUCTS P ON T.product_id = P.id WHERE   P.\"TYPE\" != 'INVEST' " +
+                        "UNION " +
+                        "SELECT T.USER_ID FROM TRANSACTIONS t INNER JOIN PRODUCTS P ON t.product_id = P.id WHERE  t.AMOUNT > 1000 AND P.\"TYPE\" = 'SAVING'",
+                String.class);
+        return result;
     }
 
+    // Recommendation Invest 500
+    public List<String> getUsersInvest500() {
+        List<String> result = jdbcTemplate.queryForList(
+                "SELECT user_id FROM TRANSACTIONs T INNER JOIN PRODUCTS P ON T.product_id = P.id " +
+                        "WHERE  P.\"TYPE\" = 'DEBIT' " +
+                        "UNION " +
+                        "SELECT user_id FROM TRANSACTIONs T " +
+                        "INNER JOIN PRODUCTS P ON T.product_id = P.id WHERE   P.\"TYPE\" != 'INVEST' " +
+                        "UNION " +
+                        "SELECT T.USER_ID FROM TRANSACTIONS t INNER JOIN PRODUCTS P ON t.product_id = P.id WHERE  t.AMOUNT > 1000 AND P.\"TYPE\" = 'SAVING'",
+                String.class);
+        return result;
+    }
+
+    public List<String> getTopSaving() {
+        List<String> result = jdbcTemplate.queryForList(
+                "SELECT DISTINCT t.USER_ID FROM TRANSACTIONs T INNER JOIN PRODUCTS P ON T.product_id = P.id " +
+                        "WHERE P.\"TYPE\" = 'DEBIT' " +
+                        "and T.PRODUCT_ID <> ALL (SELECT PRODUCTS.ID FROM PRODUCTS WHERE PRODUCTS.\"TYPE\" = 'INVEST') " +
+                        "AND T.USER_ID <> ALL (SELECT T.USER_ID FROM TRANSACTIONS t INNER JOIN PRODUCTS P ON t.product_id = P.id WHERE  t.AMOUNT < 1000 AND P.\"TYPE\" = 'SAVING')",
+                String.class);
+        return result;
+    }
+
+    public List<String> getCredit() {
+        List<String> result = jdbcTemplate.queryForList(
+                "SELECT DISTINCT t.USER_ID FROM TRANSACTIONs T INNER JOIN PRODUCTS P ON T.product_id = P.id " +
+                        "WHERE P.\"TYPE\" = 'DEBIT' " +
+                        "and T.PRODUCT_ID <> ALL (SELECT PRODUCTS.ID FROM PRODUCTS WHERE PRODUCTS.\"TYPE\" = 'INVEST') " +
+                        "AND T.USER_ID <> ALL (SELECT T.USER_ID FROM TRANSACTIONS t INNER JOIN PRODUCTS P ON t.product_id = P.id WHERE  t.AMOUNT < 1000 AND P.\"TYPE\" = 'SAVING')",
+                String.class);
+        return result;
+    }
 
 
 }

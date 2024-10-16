@@ -3,6 +3,7 @@ package sky.pro.bankstar.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sky.pro.bankstar.model.Recommendation;
 import sky.pro.bankstar.service.StarService;
 
 import java.util.List;
@@ -23,21 +24,20 @@ public class StarController {
     }
 
     @GetMapping
-    public int getRandomTransactionAmount() {
+    public int getCountOfUsers() {
         return starService.getCountOfUsers();
     }
 
-    @GetMapping("500")
-    public List<String> getUsersInvest500() {
-        return starService.getUsersInvest500();
+    @GetMapping("recommendation")
+    public List<Recommendation> getRecommendation(UUID user) {
+
+        return starService.getRecommendation(user);
     }
-    @GetMapping("saving")
-    public List<String> getUsersTopSaving() {
-        return starService.getUsersTopSaving();
+
+    @GetMapping("list")
+    public List<String> getListOfUsers() {
+        return starService.getListOfUsers();
     }
-    @GetMapping("credit")
-    public List<String> getUsersCredit() {
-        return starService.getUsersCredit();
-    }
+
 
 }
