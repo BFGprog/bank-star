@@ -35,8 +35,8 @@ public class StarController {
     }
 
     @GetMapping("list")
-    public List<String> getListOfUsers() {
-        return starService.getListOfUsers();
+    public List<String> getListOfUsersForTwoRecommendation() {
+        return starService.getListOfUsersForTwoRecommendation();
     }
 
 

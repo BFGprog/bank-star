@@ -13,6 +13,6 @@ public interface StarService {
 
     public List<Recommendation> getRecommendation(UUID user);
 
-    public List<String> getListOfUsers();
+    public List<String> getListOfUsersForTwoRecommendation();
 
 }
