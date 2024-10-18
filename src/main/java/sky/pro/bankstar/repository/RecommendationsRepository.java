@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -17,18 +18,18 @@ public class RecommendationsRepository {
     }
 
     public int getRandomTransactionAmount(UUID user) {
-        Integer result = jdbcTemplate.queryForObject(
-                "SELECT amount FROM transactions t WHERE t.user_id = ? LIMIT 1",
-                Integer.class,
-                user);
-        return result != null ? result : 0;
+        return Optional.ofNullable(jdbcTemplate.queryForObject(
+                        "SELECT amount FROM transactions WHERE user_id = ? LIMIT 1",
+                        Integer.class,
+                        user))
+                .orElse(0);//Использовал Optional, вместо "0". Должно быть лучше_)
     }
 
     public int getCountOfUsers() {
-        Integer result = jdbcTemplate.queryForObject(
-                "SELECT COUNT(amount) FROM transactions",
-                Integer.class);
-        return result != null ? result : 0;
+        return Optional.ofNullable(jdbcTemplate.queryForObject(
+                        "SELECT COUNT(DISTINCT user_id) FROM transactions",
+                        Integer.class))
+                .orElse(0); //Использовал Optional, вместо "0". Должно быть лучше_)
     }
 
     public List<String> getListOfUsersForTwoRecommendation() {

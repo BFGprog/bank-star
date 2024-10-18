@@ -11,7 +11,7 @@ import java.util.UUID;
 @Service
 public class StarServiceImpl implements StarService {
 
-    RecommendationsRepository repository;
+    private final RecommendationsRepository repository;
 
     public StarServiceImpl(RecommendationsRepository repository) {
         this.repository = repository;
