@@ -1,3 +1,6 @@
+<h1 align="center">Привет, это приложение банка <a href="https://daniilshat.ru/" target="_blank">«Стар»</a> 
+<img src="https://github.com/blackcater/blackcater/raw/main/images/Hi.gif" height="32"/></h1>
+
 Привет, это приложение банка «Стар»
 Это сервис, который рекомендует нашим клиентам новые банковские продукты, используя данные из уже наполненной базы данных.
 Взаимодействие с базой осуществляется с помощью JdbcTemplate. 
