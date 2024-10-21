@@ -14,7 +14,6 @@ import sky.pro.bankstar.service.StarService;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -90,11 +89,5 @@ public class StarControllerRestTest {
         ResponseEntity<T> response = restTemplate.getForEntity(url, (Class<T>) expectedResponse.getClass());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse, response.getBody());
-    }
-
-    private void assertErrorResponse(String url, HttpStatus expectedStatus, String expectedMessage) {
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        assertEquals(expectedStatus, response.getStatusCode());
-        assertEquals(expectedMessage, response.getBody());
     }
 }
