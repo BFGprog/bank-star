@@ -12,6 +12,7 @@ import java.util.UUID;
 //Пользователь не использует продукты с типом INVEST.
 //Сумма пополнений продуктов с типом SAVING больше 1000 ₽.
 
+
 @Component
 public class RuleOfInvest500 implements RecommendationsRuleSet {
 

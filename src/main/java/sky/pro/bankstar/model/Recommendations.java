@@ -5,6 +5,7 @@ import java.util.UUID;
 
 //  Рекомендации пользователям по инвестиционным продуктам
 
+
 public class Recommendations {
     private String name;
     private UUID id;

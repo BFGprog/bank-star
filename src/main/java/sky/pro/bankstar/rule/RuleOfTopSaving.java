@@ -12,6 +12,7 @@ import java.util.UUID;
 //Сумма пополнений по всем продуктам типа DEBIT больше или равна 50 000 ₽ ИЛИ Сумма пополнений по всем продуктам типа SAVING больше или равна 50 000 ₽.
 //Сумма пополнений по всем продуктам типа DEBIT больше, чем сумма трат по всем продуктам типа DEBIT.
 
+
 @Component
 public class RuleOfTopSaving implements RecommendationsRuleSet {
 

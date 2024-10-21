@@ -1,6 +1,5 @@
 package sky.pro.bankstar.rule;
 
-
 import org.springframework.stereotype.Component;
 import sky.pro.bankstar.model.Recommendations;
 import sky.pro.bankstar.repository.RecommendationsRepository;
