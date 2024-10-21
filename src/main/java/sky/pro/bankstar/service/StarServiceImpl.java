@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import sky.pro.bankstar.repository.RecommendationsRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -15,8 +16,9 @@ public class StarServiceImpl implements StarService {
         this.repository = repository;
     }
 
+    @Override
     public int getRandomTransactionAmount(UUID user) {
-        return repository.getRandomTransactionAmount(user);
+        return repository.getRandomTransactionAmount(user).orElse(0);
     }
 
     @Override
