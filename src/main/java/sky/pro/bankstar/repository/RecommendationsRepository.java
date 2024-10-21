@@ -22,13 +22,6 @@ public class RecommendationsRepository {
         return result != null ? result : 0;
     }
 
-    public int getCountOfUsers() {
-        Integer result = jdbcTemplate.queryForObject(
-                "SELECT COUNT(amount) FROM transactions",
-                Integer.class);
-        return result != null ? result : 0;
-    }
-
     public boolean hasDebitProduct(UUID user_id) {
         Integer result = jdbcTemplate.queryForObject("SELECT COUNT (DISTINCT t.USER_ID) FROM TRANSACTIONS t " +
                 "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
