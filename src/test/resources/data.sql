@@ -1,0 +1,2 @@
+INSERT INTO recommendations (id, name, text) VALUES ('00000000-0000-0000-0000-000000000001', 'Recommendation 1', 'Text 1');
+INSERT INTO recommendations (id, name, text) VALUES ('00000000-0000-0000-0000-000000000002', 'Recommendation 2', 'Text 2');
