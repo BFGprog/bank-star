@@ -1,8 +1,9 @@
 package sky.pro.bankstar.service;
 
 import org.springframework.stereotype.Service;
-import sky.pro.bankstar.model.Recommendations;
 import sky.pro.bankstar.rule.RecommendationsRuleSet;
+import sky.pro.bankstar.model.Recommendations;
+
 
 import java.util.ArrayList;
 import java.util.List;

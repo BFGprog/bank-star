@@ -1,64 +1,89 @@
 package sky.pro.bankstar.model;
 
+import sky.pro.bankstar.model.Rule;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-//  Рекомендации пользователям по инвестиционным продуктам
-
-
 public class Recommendations {
-    private String name;
-    private UUID id;
-    private String text;
 
-    public Recommendations(String name, UUID id, String text) {
-        this.name = name;
-        this.id = id;
-        this.text = text;
+    private Long id;
+    private String product_name;
+    private UUID product_id;
+    private String product_text;
+    private List<Rule> rule;
+
+    public Recommendations() {
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Recommendations that)) return false;
-        return Objects.equals(name, that.name) && Objects.equals(id, that.id) && Objects.equals(text, that.text);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, id, text);
+    public Recommendations(String product_name, UUID product_id, String product_text) {
+        this.product_name = product_name;
+        this.product_id = product_id;
+        this.product_text = product_text;
     }
 
     @Override
     public String toString() {
         return "Recommendations{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                ", text='" + text + '\'' +
+                "id=" + id +
+                ", product_name='" + product_name + '\'' +
+                ", product_id=" + product_id +
+                ", product_text='" + product_text + '\'' +
+                ", rule=" + rule +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Recommendations that = (Recommendations) o;
+        return Objects.equals(id, that.id) && Objects.equals(product_name, that.product_name) && Objects.equals(product_id, that.product_id) && Objects.equals(product_text, that.product_text) && Objects.equals(rule, that.rule);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, product_name, product_id, product_text, rule);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
+    }
+
+    public UUID getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(UUID product_id) {
+        this.product_id = product_id;
+    }
+
+    public String getProduct_text() {
+        return product_text;
+    }
+
+    public void setProduct_text(String product_text) {
+        this.product_text = product_text;
+    }
+
+    public List<Rule> getRule() {
+        return rule;
+    }
+
+    public void setRule(List<Rule> rule) {
+        this.rule = rule;
     }
 }
