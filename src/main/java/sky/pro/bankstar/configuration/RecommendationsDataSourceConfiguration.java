@@ -3,8 +3,10 @@ package sky.pro.bankstar.configuration;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -41,4 +43,18 @@ public class RecommendationsDataSourceConfiguration {
     ) {
         return new JdbcTemplate(dataSource);
     }
+
+
+    @Primary
+    @Bean(name = "defaultDataSource")
+    public DataSource defaultDataSource(DataSourceProperties properties) {
+        return properties.initializeDataSourceBuilder().build();
+    }
+
+    @Bean(name = "defaultJdbcTemplate")
+    public JdbcTemplate defaultDataSourceJdbcTemplate(@Qualifier("defaultDataSource") DataSource dataSource
+    ) {
+        return new JdbcTemplate(dataSource);
+    }
+
 }
