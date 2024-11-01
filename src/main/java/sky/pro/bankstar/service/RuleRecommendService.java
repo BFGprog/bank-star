@@ -2,7 +2,10 @@ package sky.pro.bankstar.service;
 
 import org.springframework.stereotype.Service;
 import sky.pro.bankstar.model.Recommendations;
+import sky.pro.bankstar.model.Rule;
 import sky.pro.bankstar.repository.RuleRecommendRepository;
+
+import java.util.List;
 
 @Service
 public class RuleRecommendService {
@@ -20,5 +23,18 @@ public class RuleRecommendService {
     public void delRecommendation(Long id) {
         ruleRecommendRepository.delRecommendation(id);
     }
+
+    public List<Rule> getRules(Long id) {
+        return ruleRecommendRepository.getRules(id);
+    }
+
+    public List<Long> listRecommendationsId() {
+        return ruleRecommendRepository.listRecommendationsId();
+    }
+
+    public Recommendations getRecommendation(Long id) {
+        return ruleRecommendRepository.getRecommendation(id);
+    }
+
 
 }

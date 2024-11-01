@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import sky.pro.bankstar.model.CacheFactory;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -77,4 +78,66 @@ public class RecommendationsRepository {
 
         return result != null ? result : 0;
     }
+
+    // rule 1
+    public boolean checkUserOf(UUID user_id, List<String> arguments, boolean negate) {
+        Boolean result = jdbcTemplate.queryForObject(
+                "SELECT CASE WHEN ( " +
+                        "SELECT COUNT(*) FROM TRANSACTIONS t " +
+                        "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
+                        "WHERE t.USER_ID = ? " +
+                        "AND p.TYPE = '" + arguments.get(0) + "' " +
+                        ") > 0 then 'true' else 'false' end",
+                Boolean.class,
+                user_id);
+        return result == negate ? true : false;
+    }
+
+    // rule 2
+    public boolean checkActiveUserOf(UUID user_id, List<String> arguments, boolean negate) {
+        Boolean result = jdbcTemplate.queryForObject(
+                "SELECT CASE WHEN ( " +
+                        "SELECT COUNT(*) FROM TRANSACTIONS t " +
+                        "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
+                        "WHERE t.USER_ID = ? " +
+                        "AND p.TYPE = '" + arguments.get(0) + "' " +
+                        ") > 4 then 'true' else 'false' end",
+                Boolean.class,
+                user_id);
+        return result == negate ? false : true;
+    }
+
+    // rule 3
+    public boolean checkTransactionSumCompare(UUID user_id, List<String> arguments, boolean negate) {
+        Boolean result = jdbcTemplate.queryForObject(
+                "SELECT CASE WHEN ( " +
+                        "SELECT sum(amount) FROM TRANSACTIONS " +
+                        "WHERE PRODUCT_ID IN (SELECT id FROM PRODUCTS WHERE TYPE = '" + arguments.get(0) + "') " +
+                        "AND TYPE = '" + arguments.get(1) + "' AND USER_id = ? " +
+                        ") " + arguments.get(2) + " " + arguments.get(3) + " then 'true' else 'false' end ",
+                Boolean.class,
+                user_id);
+        return result == negate ? true : false;
+    }
+
+    // rule 4
+    public boolean checkTransactionSumCompareDepositWithdraw(UUID user_id, List<String> arguments, boolean negate) {
+        Boolean result = jdbcTemplate.queryForObject(
+                "SELECT CASE WHEN ( " +
+                        "SELECT sum(amount) FROM TRANSACTIONS " +
+                        "WHERE PRODUCT_ID IN (SELECT id FROM PRODUCTS WHERE TYPE = '" + arguments.get(0) + "') " +
+                        "AND TYPE = 'DEPOSIT' AND USER_id = ? " +
+                        ") " + arguments.get(1) + " ( " +
+                        "SELECT sum(amount) FROM TRANSACTIONS " +
+                        "WHERE PRODUCT_ID IN (SELECT id FROM PRODUCTS WHERE TYPE = '" + arguments.get(0) + "') " +
+                        "AND TYPE = 'WITHDRAW' AND USER_id = ? " +
+                        ") " +
+                        "then 'true' else 'false' end",
+                Boolean.class,
+                user_id,
+                user_id);
+        return result == negate ? true : false;
+    }
+
+
 }
