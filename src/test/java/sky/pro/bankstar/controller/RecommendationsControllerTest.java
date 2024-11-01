@@ -34,7 +34,8 @@ public class RecommendationsControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Test //Этот метод проверяет, что контроллер возвращает правильное случайное значение транзакции для данного пользователя
+    @Test
+    //Этот метод проверяет, что контроллер возвращает правильное случайное значение транзакции для данного пользователя
     public void testGetRandomTransactionAmountForCurrentUser() throws Exception {
         UUID userId = UUID.fromString("00000000-0000-0000-0000-000000000001");
         when(recommendationsRepository.getRandomTransactionAmount(userId)).thenReturn(100);
