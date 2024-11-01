@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
@@ -87,5 +88,23 @@ public class RuleRecommendRepository {
         jdbcTemplate.update("DELETE FROM recommendations where id = ?", id);
     }
 
+    public List<Rule> getRules(Long id) {
+        return jdbcTemplate.query("select * from rules where recommendation_id = ?",
+                new Object[]{id},
+                new RuleRowMapper());
+    }
+
+    public List<Long> listRecommendationsId() {
+    List<Long> recommendationsId = jdbcTemplate.queryForList(
+            "select id from recommendations",
+            Long.class);
+    return recommendationsId;
+    }
+
+    public Recommendations getRecommendation(Long id) {
+        return (Recommendations) jdbcTemplate.queryForObject("select * from recommendations where id = ?",
+                new Object[]{id},
+                new BeanPropertyRowMapper(Recommendations.class));
+    }
 
 }

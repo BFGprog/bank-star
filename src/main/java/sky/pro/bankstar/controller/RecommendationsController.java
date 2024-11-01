@@ -33,4 +33,11 @@ public class RecommendationsController {
         return "user_id: " + users_id + ", \nrecommendations: " +
                 recommendationsService.getRecommendations(users_id);
     }
+
+    // Task 2
+    @GetMapping("recommendations{users_id}")
+    public String getRecommendationsForUser(@PathVariable("users_id") UUID users_id) {
+        return "user_id: " + users_id + ", \nrecommendations: " +
+                recommendationsService.getRecommendationsNew(users_id);
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.List;
 
 public class RuleRowMapper implements RowMapper<Rule> {
 
@@ -12,7 +13,7 @@ public class RuleRowMapper implements RowMapper<Rule> {
     public Rule mapRow(ResultSet rs, int rowNum) throws SQLException {
         Rule rule = new Rule();
         rule.setQuery(rs.getString("query"));
-        rule.setArguments(Collections.singletonList(rs.getString("arguments")));
+        rule.setArguments((List<String>) List.of(rs.getString("arguments" ).split(",\\s*" )));
         rule.setNegate(rs.getBoolean("negate"));
     return rule;
     }
