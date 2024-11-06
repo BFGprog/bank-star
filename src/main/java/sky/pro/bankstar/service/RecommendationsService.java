@@ -60,25 +60,26 @@ public class RecommendationsService {
             rulesList = ruleRecommendService.getRules(recommId);
             for (int j = 0; j < rulesList.size(); j++) {
                 Rule rule = rulesList.get(j);
-                if (rule.getQuery().equals("USER_OF" )) {
+                if (rule.getQuery() == Query.USER_OF.name()) {
                     temp = checkUserOf(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
                     }
+
                 }
-                if (rule.getQuery().equals("ACTIVE_USER_OF" )) {
+                if (rule.getQuery() == Query.ACTIVE_USER_OF.name()) {
                     temp = checkActiveUserOf(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
                     }
                 }
-                if (rule.getQuery().equals("TRANSACTION_SUM_COMPARE" )) {
+                if (rule.getQuery() == Query.TRANSACTION_SUM_COMPARE.name()) {
                     temp = checkTransactionSumCompare(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
                     }
                 }
-                if (rule.getQuery().equals("TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW" )) {
+                if (rule.getQuery() == Query.TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW.name()) {
                     temp = checkTransactionSumCompareDepositWithdraw(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
@@ -114,5 +115,13 @@ public class RecommendationsService {
         return recommendationsRepository.checkTransactionSumCompareDepositWithdraw(user_id, arguments, negate);
     }
 
+}
+
+enum Query {
+
+    USER_OF,
+    ACTIVE_USER_OF,
+    TRANSACTION_SUM_COMPARE,
+    TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW
 }
 
