@@ -6,14 +6,14 @@ import java.util.Objects;
 
 public class Rule {
 
-    private String query;
+    private Query query;
     private List<String> arguments;
     private boolean negate;
 
     public Rule() {
     }
 
-    public Rule(String query, List<String> arguments, boolean negate) {
+    public Rule(Query query, List<String> arguments, boolean negate) {
         this.query = query;
         this.arguments = arguments;
         this.negate = negate;
@@ -41,11 +41,11 @@ public class Rule {
         return Objects.hash(query, arguments, negate);
     }
 
-    public String getQuery() {
+    public Query getQuery() {
         return query;
     }
 
-    public void setQuery(String query) {
+    public void setQuery(Query query) {
         this.query = query;
     }
 

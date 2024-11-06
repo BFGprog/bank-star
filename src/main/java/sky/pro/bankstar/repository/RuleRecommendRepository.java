@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import sky.pro.bankstar.model.Query;
 import sky.pro.bankstar.model.Recommendations;
 import sky.pro.bankstar.model.Rule;
 import sky.pro.bankstar.model.RuleRowMapper;
@@ -51,7 +52,7 @@ public class RuleRecommendRepository {
 
         List<Rule> rules = recommendation.getRule();
         for (int i = 0; i < rules.size(); i++) {
-            String query = rules.get(i).getQuery();
+            Query query = rules.get(i).getQuery();
             String arguments = rules.get(i).getArguments()//.toString();
                     .stream()
                     .collect(Collectors.joining(", "));
@@ -61,7 +62,7 @@ public class RuleRecommendRepository {
                                     public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                                         PreparedStatement ps = connection.prepareStatement(insertRule, new String[]{"rules_id"});
                                         ps.setString(1, keyHolder.getKey().toString());
-                                        ps.setString(2, query);
+                                        ps.setString(2, String.valueOf(query));
                                         ps.setString(3, arguments);
                                         ps.setString(4, negate);
                                         return ps;
