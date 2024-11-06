@@ -3,6 +3,7 @@ package sky.pro.bankstar.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import sky.pro.bankstar.model.Query;
 import sky.pro.bankstar.model.Rule;
 import sky.pro.bankstar.repository.RecommendationsRepository;
 import sky.pro.bankstar.repository.RuleRecommendRepository;
@@ -60,26 +61,26 @@ public class RecommendationsService {
             rulesList = ruleRecommendService.getRules(recommId);
             for (int j = 0; j < rulesList.size(); j++) {
                 Rule rule = rulesList.get(j);
-                if (rule.getQuery() == Query.USER_OF.name()) {
+                if (rule.getQuery() == Query.USER_OF) {
                     temp = checkUserOf(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
                     }
 
                 }
-                if (rule.getQuery() == Query.ACTIVE_USER_OF.name()) {
+                if (rule.getQuery() == Query.ACTIVE_USER_OF) {
                     temp = checkActiveUserOf(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
                     }
                 }
-                if (rule.getQuery() == Query.TRANSACTION_SUM_COMPARE.name()) {
+                if (rule.getQuery() == Query.TRANSACTION_SUM_COMPARE) {
                     temp = checkTransactionSumCompare(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
                     }
                 }
-                if (rule.getQuery() == Query.TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW.name()) {
+                if (rule.getQuery() == Query.TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW) {
                     temp = checkTransactionSumCompareDepositWithdraw(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
@@ -117,11 +118,5 @@ public class RecommendationsService {
 
 }
 
-enum Query {
 
-    USER_OF,
-    ACTIVE_USER_OF,
-    TRANSACTION_SUM_COMPARE,
-    TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW
-}
 
