@@ -1,15 +1,14 @@
 package sky.pro.bankstar.repository;
 
-import com.github.benmanes.caffeine.cache.Cache;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import sky.pro.bankstar.model.CacheFactory;
+import sky.pro.bankstar.model.UserDB;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @Repository
 public class RecommendationsRepository {
@@ -138,6 +137,13 @@ public class RecommendationsRepository {
                 user_id);
         return result == negate ? true : false;
     }
+//   Получаем пользователя по имени.
+    public UserDB getUser(String userName) {
 
-
+        UserDB userDB = jdbcTemplate.queryForObject(
+                "SELECT ID, FIRST_NAME, LAST_NAME FROM USERS u WHERE u.USERNAME = ?",
+                new Object[]{userName},
+                new BeanPropertyRowMapper<>(UserDB.class));
+            return userDB;
+    }
 }
