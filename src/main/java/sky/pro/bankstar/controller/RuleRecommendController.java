@@ -7,6 +7,7 @@ import sky.pro.bankstar.model.Rule;
 import sky.pro.bankstar.service.RuleRecommendService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("dynamic-rules")
@@ -32,5 +33,11 @@ public class RuleRecommendController {
     public List<Rule> getRules(@PathVariable Long id) {
         return ruleRecommendService.getRules(id);
     }
+
+    @GetMapping("stats")
+    public Map<String, String> getIdAndCountRules() {
+        return ruleRecommendService.getIdAndCountRules();
+    }
+
 
 }

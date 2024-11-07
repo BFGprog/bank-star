@@ -16,10 +16,9 @@ import sky.pro.bankstar.model.RuleRowMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -96,10 +95,10 @@ public class RuleRecommendRepository {
     }
 
     public List<Long> listRecommendationsId() {
-    List<Long> recommendationsId = jdbcTemplate.queryForList(
-            "select id from recommendations",
-            Long.class);
-    return recommendationsId;
+        List<Long> recommendationsId = jdbcTemplate.queryForList(
+                "select id from recommendations",
+                Long.class);
+        return recommendationsId;
     }
 
     public Recommendations getRecommendation(Long id) {
@@ -107,5 +106,21 @@ public class RuleRecommendRepository {
                 new Object[]{id},
                 new BeanPropertyRowMapper(Recommendations.class));
     }
+
+    public void addCountRule(Long ruleId) {
+        jdbcTemplate.update("UPDATE rules SET count = count + 1 where rules_id = ?", ruleId);
+    }
+
+    public Map<String, String> getIdAndCountRules() {
+        return jdbcTemplate.query("select rules_id, count from rules", (ResultSet rs) -> {
+            HashMap<String,String> results = new HashMap<>();
+            while (rs.next()) {
+                results.put("rule_id: " + rs.getLong("rules_id"),
+                    "count: " + rs.getInt("count"));
+            }
+            return results;
+        });
+    }
+
 
 }
