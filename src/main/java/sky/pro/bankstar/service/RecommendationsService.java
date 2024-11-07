@@ -66,25 +66,28 @@ public class RecommendationsService {
                     if (!temp) {
                         break;
                     }
-
+                    ruleRecommendService.addCountRule(rule.getId());
                 }
                 if (rule.getQuery() == Query.ACTIVE_USER_OF) {
                     temp = checkActiveUserOf(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
                     }
+                    ruleRecommendService.addCountRule(rule.getId());
                 }
                 if (rule.getQuery() == Query.TRANSACTION_SUM_COMPARE) {
                     temp = checkTransactionSumCompare(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
                     }
+                    ruleRecommendService.addCountRule(rule.getId());
                 }
                 if (rule.getQuery() == Query.TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW) {
                     temp = checkTransactionSumCompareDepositWithdraw(users_id, rule.getArguments(), rule.isNegate());
                     if (!temp) {
                         break;
                     }
+                    ruleRecommendService.addCountRule(rule.getId());
                 }
                 logger.debug("For rule - " + String.valueOf(j + 1) + " Temp = " + String.valueOf(temp));
             }

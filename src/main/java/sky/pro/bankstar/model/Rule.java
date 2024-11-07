@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Rule {
-
+    private Long id;
     private Query query;
     private List<String> arguments;
     private boolean negate;
@@ -63,5 +63,13 @@ public class Rule {
 
     public void setNegate(boolean negate) {
         this.negate = negate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

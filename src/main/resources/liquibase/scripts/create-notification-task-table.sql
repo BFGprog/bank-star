@@ -17,6 +17,11 @@ create table if not exists public.rules (
 	on delete cascade
 );
 
+-- changeset BFGprog:2
+ALTER TABLE public.rules
+ADD count int NOT NULL DEFAULT 0;
+
+
 
 
 

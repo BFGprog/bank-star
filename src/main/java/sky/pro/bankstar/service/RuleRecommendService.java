@@ -1,11 +1,13 @@
 package sky.pro.bankstar.service;
 
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import sky.pro.bankstar.model.Recommendations;
 import sky.pro.bankstar.model.Rule;
 import sky.pro.bankstar.repository.RuleRecommendRepository;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RuleRecommendService {
@@ -36,5 +38,12 @@ public class RuleRecommendService {
         return ruleRecommendRepository.getRecommendation(id);
     }
 
+    public void addCountRule(Long ruleId) {
+        ruleRecommendRepository.addCountRule(ruleId);
+    }
+
+    public Map<String, String> getIdAndCountRules() {
+        return ruleRecommendRepository.getIdAndCountRules();
+    }
 
 }

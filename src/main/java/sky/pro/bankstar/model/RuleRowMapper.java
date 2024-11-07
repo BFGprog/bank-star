@@ -12,6 +12,7 @@ public class RuleRowMapper implements RowMapper<Rule> {
     @Override
     public Rule mapRow(ResultSet rs, int rowNum) throws SQLException {
         Rule rule = new Rule();
+        rule.setId(rs.getLong("rules_id"));
         rule.setQuery(Query.valueOf(rs.getString("query")));
         rule.setArguments((List<String>) List.of(rs.getString("arguments" ).split(",\\s*" )));
         rule.setNegate(rs.getBoolean("negate"));
