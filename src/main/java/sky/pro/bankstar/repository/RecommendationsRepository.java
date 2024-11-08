@@ -18,7 +18,7 @@ public class RecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Cacheable("randomTransactionAmount") // для каждого метода работает своё "кэширование", по названию метода
+    @Cacheable(value = "randomTransactionAmount", key = "#user_id") // для каждого метода работает своё "кэширование", по названию метода
     public int getRandomTransactionAmount(UUID user) {
         Integer result = jdbcTemplate.queryForObject(
                 "SELECT amount FROM transactions t WHERE t.user_id = ? LIMIT 1",
@@ -26,7 +26,7 @@ public class RecommendationsRepository {
                 user);
         return result != null ? result : 0;
     }
-    @Cacheable("hasDebitProduct")
+    @Cacheable(value = "hasDebitProduct", key = "#user_id")
     public boolean hasDebitProduct(UUID user_id) {
         Integer result = jdbcTemplate.queryForObject("SELECT COUNT (DISTINCT t.USER_ID) FROM TRANSACTIONS t " +
                 "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
@@ -34,7 +34,7 @@ public class RecommendationsRepository {
 
         return result > 0 ? true : false;
     }
-    @Cacheable("hasInvestProduct")
+    @Cacheable(value = "hasInvestProduct", key = "#user_id")
     public boolean hasInvestProduct(UUID user_id) {
         Integer result = jdbcTemplate.queryForObject("SELECT COUNT (DISTINCT t.USER_ID) FROM TRANSACTIONS t " +
                 "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
@@ -42,7 +42,7 @@ public class RecommendationsRepository {
 
         return result > 0 ? true : false;
     }
-    @Cacheable("hasCreditProduct")
+    @Cacheable(value = "hasCreditProduct", key = "#user_id")
     public boolean hasCreditProduct(UUID user_id) {
         Integer result = jdbcTemplate.queryForObject("SELECT COUNT (DISTINCT t.USER_ID) FROM TRANSACTIONS t " +
                 "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
@@ -50,7 +50,7 @@ public class RecommendationsRepository {
 
         return result > 0 ? true : false;
     }
-    @Cacheable("savingAmount")
+    @Cacheable(value = "savingAmount", key = "#user_id")
     public Long getSavingAmount(UUID user_id) {
         Long result = jdbcTemplate.queryForObject("SELECT SUM (amount) FROM TRANSACTIONS t " +
                         "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
@@ -59,7 +59,7 @@ public class RecommendationsRepository {
 
         return result != null ? result : 0;
     }
-    @Cacheable("debitAmount")
+    @Cacheable(value = "debitAmount", key = "#user_id")
     public Long getDebitAmount(UUID user_id) {
         Long result = jdbcTemplate.queryForObject("SELECT SUM (amount) FROM TRANSACTIONS t " +
                         "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
@@ -68,7 +68,7 @@ public class RecommendationsRepository {
 
         return result != null ? result : 0;
     }
-    @Cacheable("debitExpenses")
+    @Cacheable(value = "debitExpenses", key = "#user_id")
     public Long getDebitExpenses(UUID user_id) {
         Long result = jdbcTemplate.queryForObject("SELECT SUM (amount) FROM TRANSACTIONS t " +
                         "INNER JOIN PRODUCTS p ON t.PRODUCT_ID = p.ID " +
@@ -79,6 +79,7 @@ public class RecommendationsRepository {
     }
 
     // rule 1
+    @Cacheable(value = "checkUserOf", key = "#user_id.toString() + #arguments.get(0) + #negate")
     public boolean checkUserOf(UUID user_id, List<String> arguments, boolean negate) {
         Boolean result = jdbcTemplate.queryForObject(
                 "SELECT CASE WHEN ( " +
@@ -93,6 +94,7 @@ public class RecommendationsRepository {
     }
 
     // rule 2
+    @Cacheable(value = "checkActiveUserOf", key = "#user_id.toString() + #arguments.get(0) + #negate")
     public boolean checkActiveUserOf(UUID user_id, List<String> arguments, boolean negate) {
         Boolean result = jdbcTemplate.queryForObject(
                 "SELECT CASE WHEN ( " +
@@ -107,6 +109,7 @@ public class RecommendationsRepository {
     }
 
     // rule 3
+    @Cacheable(value = "checkTransactionSumCompare", key = "#user_id.toString() + #arguments.get(0) + #arguments.get(1) + #arguments.get(2) + #arguments.get(3) + #negate")
     public boolean checkTransactionSumCompare(UUID user_id, List<String> arguments, boolean negate) {
         Boolean result = jdbcTemplate.queryForObject(
                 "SELECT CASE WHEN ( " +
@@ -120,6 +123,7 @@ public class RecommendationsRepository {
     }
 
     // rule 4
+    @Cacheable(value = "checkTransactionSumCompareDepositWithdraw", key = "#user_id.toString() + #arguments.get(0) + #arguments.get(1) + #negate")
     public boolean checkTransactionSumCompareDepositWithdraw(UUID user_id, List<String> arguments, boolean negate) {
         Boolean result = jdbcTemplate.queryForObject(
                 "SELECT CASE WHEN ( " +
@@ -138,6 +142,7 @@ public class RecommendationsRepository {
         return result == negate ? true : false;
     }
 //   Получаем пользователя по имени.
+    @Cacheable(value = "getUser", key = "#userName")
     public UserDB getUser(String userName) {
 
         UserDB userDB = jdbcTemplate.queryForObject(

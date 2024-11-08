@@ -3,6 +3,7 @@ package sky.pro.bankstar.repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -87,13 +88,13 @@ public class RuleRecommendRepository {
     public void delRecommendation(Long id) {
         jdbcTemplate.update("DELETE FROM recommendations where id = ?", id);
     }
-
+    @Cacheable(value = "getRules", key = "#id")
     public List<Rule> getRules(Long id) {
         return jdbcTemplate.query("select * from rules where recommendation_id = ?",
                 new Object[]{id},
                 new RuleRowMapper());
     }
-
+    @Cacheable(value = "listRecommendationsId")
     public List<Long> listRecommendationsId() {
         List<Long> recommendationsId = jdbcTemplate.queryForList(
                 "select id from recommendations",
@@ -110,7 +111,7 @@ public class RuleRecommendRepository {
     public void addCountRule(Long ruleId) {
         jdbcTemplate.update("UPDATE rules SET count = count + 1 where rules_id = ?", ruleId);
     }
-
+    @Cacheable(value = "getIdAndCountRules")
     public Map<String, String> getIdAndCountRules() {
         return jdbcTemplate.query("select rules_id, count from rules", (ResultSet rs) -> {
             HashMap<String,String> results = new HashMap<>();
