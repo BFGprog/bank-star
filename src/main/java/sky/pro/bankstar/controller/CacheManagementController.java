@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sky.pro.bankstar.model.Info;
+import sky.pro.bankstar.service.InfoService;
 
 @RestController
 @RequestMapping("/management")
@@ -14,6 +17,9 @@ public class CacheManagementController {
 
     @Autowired
     private CacheManager cacheManager;
+
+    @Autowired
+    private InfoService infoService;
 
     @Autowired
     @Qualifier("recommendationsJdbcTemplate") // Указываем конкретный JdbcTemplate для RecommendationsRepository
@@ -48,5 +54,10 @@ public class CacheManagementController {
     private void updateDatabaseForRules() {
         defaultJdbcTemplate.update("UPDATE rules SET count = count + 1 WHERE count < 100");
         System.out.println("Database updated for RuleRecommendRepository.");
+    }
+
+    @GetMapping("/info")
+    public Info getInfoService() {
+        return infoService.getInfo();
     }
 }
