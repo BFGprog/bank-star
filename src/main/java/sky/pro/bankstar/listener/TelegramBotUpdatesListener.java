@@ -50,24 +50,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-            if (Objects.isNull(update.message())) {
-                return;
-            }
             Long chatId = update.message().chat().id();
             String messageText = update.message().text();
             Matcher matcher = pattern.matcher(messageText);
 
 //Проверка на наличие текста
 
-            try {
-                if (Objects.isNull(update.message().text())) {
-                    throw new RuntimeException("Нет текста");
-                }
-            } catch (RuntimeException e) {
-                messageSender.send(update.message().chat().id(), "Я работаю только с текстом");
+            if (update.message().text() == null) {
+                messageSender.send(update.message().chat().id(), "Не введен текст");
                 return;
             }
+
 //При первом обращении бот приветствует пользователя и печатает справку.
+
             if (messageText.equals("/start")) {
                 String message = "Привет! Для получения информации по банковским продуктам введите \"/recommend <username>\"";
                 messageSender.send(chatId, message);
@@ -85,23 +80,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 String item = matcher.group(1);
                 System.out.println(matcher.toString());
                 UserDB userDB = null;
-                try {
-                    userDB = recommendationsRepository.getUser(item);
-                    logger.info("User has been found: {}", userDB.getFirstName());
-                }
+                userDB = recommendationsRepository.getUser(item);
+                logger.info("User has been found: {}", userDB.getFirstName());
 // Если пользователь не найден, бот выдает сообщение «Пользователь не найден».
-
-                catch (Exception e) {
+                if (userDB.getId() == null) {
                     messageSender.send(chatId, "Пользователь не найден!");
                     logger.info("User not found.");
-
                     return;
                 }
 //Команда возвращает рекомендации в форме:/
 //Здравствуйте <Имя и фамилия пользователя>// (данные есть в базе).
 // //Новые продукты для вас:
 // список продуктов с рекомендациями, удобно отформатированный.
-                List<Recommendations> recommendationsList = recommendationsService.getRecommendations(userDB.getId());
+                List<Recommendations> recommendationsList = recommendationsService.getRecommendationsNew(userDB.getId());
                 messageSender.send(chatId, "Здравствуйте, " + userDB.getFirstName() + " " + userDB.getLastName());
                 messageSender.send(chatId, "Новые продукты для вас: ");
 
